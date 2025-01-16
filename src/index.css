@@ -33,6 +33,15 @@
   }
 }
 
+@keyframes hero-reveal {
+  0% {
+    clip-path: circle(0% at center);
+  }
+  100% {
+    clip-path: circle(150% at center);
+  }
+}
+
 @layer utilities {
   .animate-zoom-in {
     animation: zoom-in 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -40,5 +49,9 @@
   
   .animate-fade-in {
     animation: fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-hero-reveal {
+    animation: hero-reveal 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 }

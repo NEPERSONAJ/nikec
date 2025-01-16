@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ShoppingBag, ChevronRight, Menu } from 'lucide-react';
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  category: string;
-  image: string;
-}
-
 function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showText, setShowText] = useState(false);
@@ -16,41 +8,33 @@ function App() {
 
   const categories = [
     { name: 'все', image: '' },
-    { name: 'мужское', image: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?ixlib=rb-4.0.3' },
-    { name: 'женское', image: 'https://images.unsplash.com/photo-1618453292459-53424b66bb6a?ixlib=rb-4.0.3' },
-    { name: 'новинки', image: 'https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?ixlib=rb-4.0.3' },
-    { name: 'распродажа', image: 'https://images.unsplash.com/photo-1595341888016-a392ef81b7de?ixlib=rb-4.0.3' },
-  ];
-  
-  const products: Product[] = [
-    {
-      id: 1,
-      name: 'Nike Air Max Plus',
-      price: 14999,
-      category: 'мужское',
-      image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3'
+    { 
+      name: 'мужское',
+      image: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?ixlib=rb-4.0.3',
+      description: 'Летняя коллекция для мужчин'
     },
-    {
-      id: 2,
-      name: 'Nike Air Force 1',
-      price: 12999,
-      category: 'женское',
-      image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3'
+    { 
+      name: 'женское',
+      image: 'https://images.unsplash.com/photo-1618453292459-53424b66bb6a?ixlib=rb-4.0.3',
+      description: 'Свежая летняя коллекция'
     },
-    {
-      id: 3,
-      name: 'Nike Zoom Fly 5',
-      price: 16999,
-      category: 'новинки',
-      image: 'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3'
+    { 
+      name: 'детское',
+      image: 'https://images.unsplash.com/photo-1503919545889-aef636e10ad4?ixlib=rb-4.0.3',
+      description: 'Коллекция для детей'
     },
+    { 
+      name: 'унисекс',
+      image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3',
+      description: 'Универсальная коллекция'
+    }
   ];
 
   useEffect(() => {
     setIsLoaded(true);
     setTimeout(() => {
       setShowText(true);
-    }, 1500); // Показываем текст после завершения анимации картинки
+    }, 1500);
   }, []);
 
   return (
@@ -97,9 +81,7 @@ function App() {
       {/* Герой секция */}
       <div className="pt-16">
         <div className="relative h-[85vh] bg-gray-100 overflow-hidden">
-          <div className={`absolute inset-0 transition-transform duration-[1.5s] ${
-            isLoaded ? 'scale-100' : 'scale-110'
-          }`}>
+          <div className={`absolute inset-0 ${isLoaded ? 'animate-hero-reveal' : ''}`}>
             <img
               src="https://images.unsplash.com/photo-1552346154-21d32810aba3?ixlib=rb-4.0.3"
               alt="Hero"
@@ -119,63 +101,35 @@ function App() {
       {/* Категории */}
       <div className="max-w-7xl mx-auto px-4 py-24">
         <h2 className="text-4xl font-bold mb-12 tracking-tight">Категории</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="space-y-12">
           {categories.slice(1).map((category, index) => (
             <div
               key={category.name}
-              className={`relative h-[400px] group cursor-pointer overflow-hidden rounded-2xl transition-all duration-700 ${
+              className={`flex flex-row items-center gap-4 ${
+                index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
+              } ${
                 isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-              }`}
+              } transition-all duration-700`}
               style={{ transitionDelay: `${index * 150}ms` }}
             >
-              <img
-                src={category.image}
-                alt={category.name}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-8 text-white transform transition-transform duration-500 group-hover:translate-y-[-10px]">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-2xl font-medium tracking-wide">{category.name.toUpperCase()}</h3>
-                  <ChevronRight className="h-6 w-6 transform group-hover:translate-x-2 transition-transform" />
+              <div className="w-1/2">
+                <div className="relative aspect-[3/4] group cursor-pointer overflow-hidden rounded-2xl">
+                  <img
+                    src={category.image}
+                    alt={category.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Продукты */}
-      <div className="max-w-7xl mx-auto px-4 py-24 bg-gray-50">
-        <div className="flex justify-between items-center mb-12">
-          <h2 className="text-4xl font-bold tracking-tight">Популярные модели</h2>
-          <button className="hidden lg:flex items-center space-x-2 text-lg font-medium hover:text-gray-600 transition-colors">
-            <span>Смотреть все</span>
-            <ChevronRight className="h-5 w-5" />
-          </button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product, index) => (
-            <div
-              key={product.id}
-              className={`group cursor-pointer transition-all duration-700 ${
-                isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-              }`}
-              style={{ transitionDelay: `${index * 150}ms` }}
-            >
-              <div className="relative aspect-square overflow-hidden rounded-2xl mb-6">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                <button className="absolute bottom-4 left-4 right-4 bg-white text-black py-3 rounded-lg font-medium opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                  Добавить в корзину
+              <div className="w-1/2 space-y-2 px-2">
+                <h3 className="text-2xl font-bold tracking-tight">{category.name.toUpperCase()}</h3>
+                <p className="text-sm text-gray-600 line-clamp-2">{category.description}</p>
+                <button className="inline-flex items-center space-x-1 text-sm font-medium hover:text-gray-600 transition-colors group">
+                  <span>Смотреть</span>
+                  <ChevronRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
-              <h3 className="text-xl font-medium mb-2">{product.name}</h3>
-              <p className="text-gray-900 text-lg font-medium">{product.price.toLocaleString('ru-RU')} ₽</p>
             </div>
           ))}
         </div>
